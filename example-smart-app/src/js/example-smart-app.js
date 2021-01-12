@@ -61,7 +61,7 @@
         var date = new Date();
         appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
 
-        Promise.all([pt, obv, appointments]).then(onSuccess);
+        Promise.all([patient, obv, appointments]).then(onSuccess);
       } else {
         onError();
       }
