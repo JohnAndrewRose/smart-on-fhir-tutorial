@@ -12,7 +12,7 @@
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.request(`Observation`);
-        var appointments = smart.patient.request(`Appointment`);
+        var appointments = smart.patient.request("Appointment?date=" + Date());
 
         $.when(pt, obv, appointments).fail(onError);
 
