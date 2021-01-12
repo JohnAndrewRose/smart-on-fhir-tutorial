@@ -11,11 +11,8 @@
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
-        var obv = smart.patient.api.fetchAll({
-                    type: 'Observation'
-                  });
-
-        var appointments = smart.request("Appointment",{patient: patient.id, pageLimit: 2});
+        var obv = smart.patient.request(`Observation/${patient.id}`);
+        var appointments = smart.patient.request(`Appointment/${patient.id}`);
 
         $.when(pt, obv, appointments).fail(onError);
 
