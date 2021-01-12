@@ -8,7 +8,7 @@
       ret.reject();
     }
 
-    function onSuccess(patient, obv, appointments) {
+    function onSuccess(patient, obv) {
       var byCodes = smart.byCodes(obv, 'code');
       var gender = patient.gender;
 
@@ -44,7 +44,7 @@
       p.hdl = getQuantityValueAndUnit(hdl[0]);
       p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-      console.log('Appointments Data =',appointments);
+      //console.log('Appointments Data =',appointments);
 
       ret.resolve(p);
     }
@@ -55,9 +55,9 @@
         var pt = smart.patient.read();
         var obv = smart.patient.request(`Observation`);
         var date = new Date();
-        var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
+        //var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
 
-        $.when(pt, obv, appointments).then(onSuccess, onError);
+        $.when(pt, obv).then(onSuccess, onError);
       } else {
         onError();
       }
