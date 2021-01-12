@@ -2,9 +2,9 @@
   window.extractData = function() {
     var ret = $.Deferred();
     var smart;
-    var patient;
-    var obv;
-    var appointments;
+    var patientResults;
+    var obvResults;
+    var appointmentsResults;
 
 
     function onError() {
@@ -13,15 +13,15 @@
     }
 
     function onSuccess() {
-      var byCodes = smart.byCodes(obv, 'code');
-      var gender = patient.gender;
+      var byCodes = smart.byCodes(obvResults, 'code');
+      var gender = patientResults.gender;
 
       var fname = '';
       var lname = '';
 
-      if (typeof patient.name[0] !== 'undefined') {
-        fname = patient.name[0].given.join(' ');
-        lname = patient.name[0].family;
+      if (typeof patientResults.name[0] !== 'undefined') {
+        fname = patientResults.name[0].given.join(' ');
+        lname = patientResults.name[0].family;
       }
 
       var height = byCodes('8302-2');
@@ -31,7 +31,7 @@
       var ldl = byCodes('2089-1');
 
       var p = defaultPatient();
-      p.birthdate = patient.birthDate;
+      p.birthdate = patientResults.birthDate;
       p.gender = gender;
       p.fname = fname;
       p.lname = lname;
@@ -48,7 +48,7 @@
       p.hdl = getQuantityValueAndUnit(hdl[0]);
       p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-      console.log('Appointments Data =',appointments);
+      console.log('Appointments Data =',appointmentsResults);
 
       ret.resolve(p);
     }
@@ -56,12 +56,12 @@
     function onReady(client)  {
       smart = client;
       if (smart.hasOwnProperty('patient')) {
-        patient = smart.patient.read();
-        obv = smart.patient.request(`Observation`);
+        var patientPromise = smart.patient.read().then(patient => patientResults = patient);
+        var obvPromise = smart.patient.request(`Observation`).then(obv => obvResults = obv);
         var date = new Date();
-        appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
+        var appointmentsPromise = smart.patient.request("Appointment?date=ge" + date.toISOString()).then(appointments => appointmentsResults = appointments);
 
-        Promise.all([patient, obv, appointments]).then(onSuccess);
+        Promise.all([patientPromise, obvPromise, appointmentsPromise]).then(onSuccess);
       } else {
         onError();
       }
