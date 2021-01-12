@@ -4,6 +4,7 @@
     var pt;
     var obv;
     var smart;
+    var p;
 
     function onError() {
       console.log('Loading error', arguments);
@@ -28,7 +29,7 @@
       var hdl = byCodes('2085-9');
       var ldl = byCodes('2089-1');
 
-      var p = defaultPatient();
+      p = defaultPatient();
       p.birthdate = patient.birthDate;
       p.gender = gender;
       p.fname = fname;
@@ -54,12 +55,23 @@
     function onReady(client)  {
       smart = client;
       if (smart.hasOwnProperty('patient')) {
-        pt = smart.patient.read();
+        smart.patient.read().then(patient => {
+          var byCodes = smart.byCodes(obv, 'code');
+          var gender = patient.gender;
+
+          var fname = '';
+          var lname = '';
+
+          if (typeof patient.name[0] !== 'undefined') {
+            fname = patient.name[0].given.join(' ');
+            lname = patient.name[0].family.join(' ');
+          }
+        })
         obv = smart.patient.request(`Observation`);
         var date = new Date();
         //var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
 
-        $.when(pt).then(onSuccess, onError);
+        //$.when(pt).then(onSuccess, onError);
       } else {
         onError();
       }
