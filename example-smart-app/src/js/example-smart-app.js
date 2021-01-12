@@ -9,16 +9,15 @@
 
     function onReady(smart)  {
       window.smartAPI = smart;
+      console.log("\nV1");
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.api.fetchAll({
                     type: 'Observation'
                   });
-        var appointments = smart.patient.api.fetchAll({
-          type: 'Appointment',
-          patient: patient.id
-        })
+
+        var appointments = smart.request("Appointment",{patient: patient.id, pageLimit: 2});
 
         $.when(pt, obv, appointments).fail(onError);
 
