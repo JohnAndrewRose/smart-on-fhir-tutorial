@@ -9,8 +9,7 @@
 
     function onReady(smart)  {
       if (smart.hasOwnProperty('patient')) {
-        var patient = smart.patient;
-        var pt = patient.read();
+        var pt = smart.patient;
         var obv = smart.patient.request(`Observation`);
         var date = new Date();
         var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
