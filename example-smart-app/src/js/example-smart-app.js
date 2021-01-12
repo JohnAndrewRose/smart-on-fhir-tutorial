@@ -9,7 +9,6 @@
 
     function onReady(smart)  {
       window.smartAPI = smart;
-      console.log("\nV1");
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
