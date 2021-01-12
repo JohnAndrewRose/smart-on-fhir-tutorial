@@ -12,8 +12,7 @@
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.request(`Observation`);
-        var todaysDate = $.datepicker.formatDate('yyyy-mm-dd', Date());
-        var appointments = smart.patient.request("Appointment?date=ge" + todaysDate);
+        var appointments = smart.patient.request("Appointment?date=ge" + Date().toISOString());
 
         $.when(pt, obv, appointments).fail(onError);
 
