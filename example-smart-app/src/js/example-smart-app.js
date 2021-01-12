@@ -1,6 +1,8 @@
 (function(window){
   window.extractData = function() {
     var ret = $.Deferred();
+    var pt;
+    var obv;
     var smart;
 
     function onError() {
@@ -8,7 +10,7 @@
       ret.reject();
     }
 
-    function onSuccess(patient, obv) {
+    function onSuccess(patient) {
       var byCodes = smart.byCodes(obv, 'code');
       var gender = patient.gender;
 
@@ -52,12 +54,12 @@
     function onReady(client)  {
       smart = client;
       if (smart.hasOwnProperty('patient')) {
-        var pt = smart.patient.read();
-        var obv = smart.patient.request(`Observation`);
+        pt = smart.patient.read();
+        obv = smart.patient.request(`Observation`);
         var date = new Date();
         //var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
 
-        $.when(pt, obv).then(onSuccess, onError);
+        $.when(pt).then(onSuccess, onError);
       } else {
         onError();
       }
