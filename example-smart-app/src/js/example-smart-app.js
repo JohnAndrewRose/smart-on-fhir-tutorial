@@ -16,7 +16,7 @@
                     type: 'Observation'
                   });
 
-        var appointments = smart.api.fetchAll("Appointment",{patient: patient.id});
+        var appointments = smart.api.fetchAll({type: 'Appointment', patient: patient.id});
 
         $.when(pt, obv, appointments).fail(onError);
 
