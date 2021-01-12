@@ -1,101 +1,265 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-    <title>JohnAndrewRose Example-SMART-App</title>
+<html>
 
-    <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
-    <!--
-      Temporarily disable cerner-smart-embeddable-lib
-      <link rel='stylesheet' type='text/css' href='./lib/css/cerner-smart-embeddable-lib-1.0.0.min.css'>
-    -->
-  </head>
-  <body>
-    <div id='errors'>
-    </div>
-    <div id="loading" class="spinner">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
-    </div>
-    <div id='holder' >
-      <h2>Example-SMART-App</h2>
+<head>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+  <title>JohnAndrewRose SMART-App</title>
 
-      <h2>Patient Resource</h2>
-      <table>
+  <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
+</head>
+
+<body>
+  <div id='errors'>
+  </div>
+  <div id="loading" class="spinner">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+  </div>
+  <div id='holder'>
+
+    <!--HTML FORMATTING FOR WEB PAGE-->
+    <h2>Patient Resource</h2>
+    <table>
+      <tr>
+        <th>First Name:</th>
+        <td id='fname'></td>
+      </tr>
+      <tr>
+        <th>Last Name:</th>
+        <td id='lname'></td>
+      </tr>
+      <tr>
+        <th>Gender:</th>
+        <td id='gender'></td>
+      </tr>
+      <tr>
+        <th>Date of Birth:</th>
+        <td id='birthdate'></td>
+      </tr>
+      <tr>
+        <th>Age:</th>
+        <td id='age'></td>
+      </tr>
+    </table>
+  </div>
+
+  <center>
+    <div>
+      <!--formatting ofr the CareWeb Plus Img-->
+      <a href="http://imgur.com/6BhK6ge"><img src="http://i.imgur.com/6BhK6ge.png" alt="CareWeb Plus"
+          style="width:468px;height:132px;"></a>
+    </div>
+  </center>
+
+
+  <div id="container" style="width:100%">
+    <!--I split the Chief Complaint tab w/ Tests and Scroll box into two adjacent 50% divs-->
+    <div id="left" style="float:left; width:50%">
+
+      <section class="chiefComplaintTab" style="border:2px solid #9CC3E7">
+        Chief Complaint: Chest Pain
+      </section>
+
+      <table class="dataTable" style="border:2px solid #9CC3E7;">
         <tr>
-          <th>First Name Test:</th>
-          <td id='fname'></td>
+          <th></th>
+          <th>Date</th>
+          <th>Hospital</th>
         </tr>
+
         <tr>
-          <th>Last Name:</th>
-          <td id='lname'></td>
+          <td>Last EKG</td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
         </tr>
+
         <tr>
-          <th>Gender:</th>
-          <td id='gender'></td>
+          <td>Last Cath. Report</td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
         </tr>
+
         <tr>
-          <th>Date of Birth:</th>
-          <td id='birthdate'></td>
+          <td>Last ECHO</td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
         </tr>
+
+        <tr>
+          <td>Last Cardiology Note</td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
+        </tr>
+
+        <tr>
+          <td>Last D/C Summary</td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
+        </tr>
+
+        <!--I turned Systolic BP test into a hyperlink that when pressed, incites script @ bottom to re-extract data, replacing the systolicbp id with systolic bp value-->
+        <tr>
+          <td><a id="SysBPLink" href="#testinformation">Systolic BP</a></td>
+          <!--<td id = 'systolicbpDate'></td> -->
+          <td>Date not specified</td>
+          <td>Source not specified</td>
+        </tr>
+
+        <tr>
+          <td><a id="DiastolicBPLink" href="#testinformation">Diastolic BP</a></td>
+          <td>Date not specified</td>
+          <td>Source not specified</td>
+        </tr>
+
       </table>
-      <h2>Observation Resource</h2>
-      <table>
-        <tr>
-          <th>Height:</th>
-          <td id='height'></td>
-        </tr>
-        <tr>
-          <th>Systolic Blood Pressure:</th>
-          <td id='systolicbp'></td>
-
-        </tr>
-        <tr>
-          <th>Diastolic Blood Pressure:</th>
-          <td id='diastolicbp'></td>
-        </tr>
-        <tr>
-          <th>LDL:</th>
-          <td id='ldl'></td>
-        </tr>
-        <tr>
-          <th>HDL:</th>
-          <td id='hdl'></td>
-        </tr>
-      </table>
     </div>
-    <!-- Required JS files to enable this page to embed within an MPage -->
-    <!--
-      Temporarily disable cerner-smart-embeddable-lib
-      <script src='https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js'></script>
-      <script src='./lib/js/cerner-smart-embeddable-lib-1.0.0.min.js'></script>
-    -->
 
-    <!-- Application-level javascript-->
-    <script src='./src/js/example-smart-app.js'></script>
+    <div id="right" style="float:left; width:50%">
+      <!--I need to figure out how to link the tests to the scroll box so that when the test is clicked, the information will print in the scroll box...
+          I could potentially do this by giving info in scroll box an id, and replacing the contents with test results when pressed?-->
 
-    <!-- FHIR Client JS Library -->
-    <script src='./lib/js/fhir-client-v0.1.12.js'></script>
+      <section
+        style="height:350px;width:600px;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+        <div id="testinformation">
+          Scrollbox for data.
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- First Pic
+   <div id="feedback"><a href="http://imgur.com/BNOa2Pn"><img src="http://i.imgur.com/BNOa2Pn.png" title="source: imgur.com" height = "50" width = "65"/></a></div>
+   -->
 
-    <!-- Prevent session bleed caused by single threaded embedded browser and sessionStorage API -->
-    <!-- https://github.com/cerner/fhir-client-cerner-additions -->
-    <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-      extractData().then(
-        //Display Patient Demographics and Observations if extractData was success
-        function(p) {
-          drawVisualization(p);
-        },
+  <!-- Experimenting with Feedback Button -->
+  <div>
+    <button id="feedbackbutton"
+      style="height:50px;width:100px; font:16px/25px Cambria, 'Hoefler Text', 'Liberation Serif', Times, 'Times New Roman', 'serif'">
+      Feedback
+    </button>
+    <div id="FeedbackModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Feedback</h2>
+        </div>
 
-        //Display 'Failed to call FHIR Service' if extractData failed
-        function() {
-          $('#loading').hide();
-          $('#errors').html('<p> Failed to call FHIR Service </p>');
+        <div class="modal-body">
+          <div class="container">
+            <form action="/action_page.php">
+              <label for="firname">First Name</label>
+              <input type="text" id="firname" name="firstname" placeholder="Your name..">
+
+              <label for="lasname">Last Name</label>
+              <input type="text" id="lasname" name="lastname" placeholder="Your last name..">
+
+              <label for="hospital">Hospital</label>
+              <select id="hospital" name="hospital">
+                <option value="Methodist">Methodist</option>
+                <option value="Riley Ray">Riley Ray</option>
+                <option value="Eskenazi Health">Eskenazi Health</option>
+                <option value="IUHealth"> IU Health</option>
+              </select>
+
+              <label for="subject">Subject</label>
+              <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+
+              <input type="submit" value="Submit">
+              <span class="close">&times;</span>
+            </form>
+          </div>
+        </div>
+        <!--modal-body-->
+      </div>
+      <!--modal-content-->
+    </div>
+    <!--FeedBack Modal-->
+  </div>
+
+  <script>
+    // Get the modal
+    var modal = document.getElementById('FeedbackModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("feedbackbutton");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
+
+
+  <script src='./lib/es6-shim-0.35.1.min.js'></script>
+  <script src='./src/js/example-smart-app.js'></script>
+  <script src='./lib/fhir-client-v0.1.11.js'></script>
+
+  <!-- Prevent session bleed caused by single threaded embedded browser and sessionStorage API -->
+  <!-- https://github.com/cerner/fhir-client-cerner-additions -->
+  <script src='./lib/fhir-client-cerner-additions-1.0.0.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    extractData().then(
+      //Display Patient Demographics and Observations if extractData was success
+      function (p) {
+        drawVisualization(p);
+      },
+
+      //Display 'Failed to call FHIR Service' if extractData failed
+      function () {
+        $('#loading').hide();
+        $('#errors').html('<p> Failed to call FHIR Service </p>');
+      }
+    );
+  </script>
+
+  <script>//DiastolicBP onClick function (prints DiastolicBP when pressed)
+    //window.onload = function(){ //when the window finishes loading
+    var a = document.getElementById("DiastolicBPLink");//link variable a to my hyperlink
+
+    a.onclick = function (p) {//when the link is pressed, extractData() for patient, then print what I want
+
+      extractData().then(//extract data again
+        function (p) {
+          $('#testinformation').html(p.diastolicbp); //switch id "diastolicbp" for diastolic bp value
         }
       );
-    </script>
-  </body>
+    }
+      //}//end of script for DiastolicBP onClick
+  </script>
+
+  <script>//onClick function for showing the Systolic Blood Pressure
+    //window.onload = function(){ //when the window finishes loading
+    var b = document.getElementById("SysBPLink");//link variable b to my hyperlink
+
+    b.onclick = function (p) {//when the link is pressed, extractData() for patient, then print what I want
+
+      extractData().then(//extract data again
+        function (p) {
+          $('#testinformation').html(p.systolicbp); //switch id "systolic bp" for systoloc bp value
+        }
+      );
+    }
+    //}//end of script for SystolicBP onClick
+  </script>
+
+
+</body>
+
 </html>
