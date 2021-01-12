@@ -16,7 +16,7 @@
                     type: 'Observation'
                   });
 
-        var appointments = smart.request("Appointment",{patient: patient.id, pageLimit: 2});
+        var appointments = smart.api.fetchAll("Appointment",{patient: patient.id});
 
         $.when(pt, obv, appointments).fail(onError);
 
