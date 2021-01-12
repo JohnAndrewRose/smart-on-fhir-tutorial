@@ -8,16 +8,20 @@
     }
 
     function onReady(smart)  {
+      window.smartAPI = smart;
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.api.fetchAll({
                     type: 'Observation'
                   });
+        var appointments = smart.patient.api.fetchAll({
+          type: 'Appointment'
+        })
 
-        $.when(pt, obv).fail(onError);
+        $.when(pt, obv, appointments).fail(onError);
 
-        $.when(pt, obv).done(function(patient, obv) {
+        $.when(pt, obv, appointments).done(function(patient, obv, appointments) {
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
 
@@ -53,6 +57,8 @@
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
 
+          console.log('Appointments Data =',appointments);
+
           ret.resolve(p);
         });
       } else {
@@ -62,6 +68,13 @@
 
     FHIR.oauth2.ready(onReady, onError);
     return ret.promise();
+
+  };
+
+  window.createAppointment = function () {
+    var dateSelected = $("#datepicker").val();
+                 console.log("\nCreate Appointment Function, date=",dateSelected);
+    window.smartAPI.create({resourceType: Appointment, status: 'proposed', start: dateSelected,})
 
   };
 
