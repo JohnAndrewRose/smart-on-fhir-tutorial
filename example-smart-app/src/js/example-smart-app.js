@@ -16,7 +16,8 @@
                     type: 'Observation'
                   });
         var appointments = smart.patient.api.fetchAll({
-          type: 'Appointment'
+          type: 'Appointment',
+          patient: patient.id
         })
 
         $.when(pt, obv, appointments).fail(onError);
@@ -74,7 +75,7 @@
   window.createAppointment = function () {
     var dateSelected = $("#datepicker").val();
                  console.log("\nCreate Appointment Function, date=",dateSelected);
-    window.smartAPI.create({resourceType: Appointment, status: 'proposed', start: dateSelected,})
+    window.smartAPI.create({resourceType: Appointment, status: 'proposed', start: dateSelected})
 
   };
 
