@@ -1,17 +1,18 @@
 (function(window){
   window.extractData = function() {
     var ret = $.Deferred();
-    var pt;
-    var obv;
     var smart;
-    var p;
+    var patient;
+    var obv;
+    var appointments;
+
 
     function onError() {
       console.log('Loading error', arguments);
       ret.reject();
     }
 
-    function onSuccess(patient) {
+    function onSuccess() {
       var byCodes = smart.byCodes(obv, 'code');
       var gender = patient.gender;
 
@@ -29,7 +30,7 @@
       var hdl = byCodes('2085-9');
       var ldl = byCodes('2089-1');
 
-      p = defaultPatient();
+      var p = defaultPatient();
       p.birthdate = patient.birthDate;
       p.gender = gender;
       p.fname = fname;
@@ -47,7 +48,7 @@
       p.hdl = getQuantityValueAndUnit(hdl[0]);
       p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-      //console.log('Appointments Data =',appointments);
+      console.log('Appointments Data =',appointments);
 
       ret.resolve(p);
     }
@@ -55,23 +56,12 @@
     function onReady(client)  {
       smart = client;
       if (smart.hasOwnProperty('patient')) {
-        smart.patient.read().then(patient => {
-          var byCodes = smart.byCodes(obv, 'code');
-          var gender = patient.gender;
-
-          var fname = '';
-          var lname = '';
-
-          if (typeof patient.name[0] !== 'undefined') {
-            fname = patient.name[0].given.join(' ');
-            lname = patient.name[0].family.join(' ');
-          }
-        })
+        patient = smart.patient.read();
         obv = smart.patient.request(`Observation`);
         var date = new Date();
-        //var appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
+        appointments = smart.patient.request("Appointment?date=ge" + date.toISOString());
 
-        //$.when(pt).then(onSuccess, onError);
+        Promise.all([pt, obv, appointments]).then(onSuccess);
       } else {
         onError();
       }
