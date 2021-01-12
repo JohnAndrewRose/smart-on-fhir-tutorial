@@ -12,8 +12,8 @@
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.request(`Observation`);
-        var todaysDate = Date();
-        var appointments = smart.patient.request("Appointment?date=2021-01-12");
+        var todaysDate = $.datepicker.formatDate('yyyy-mm-dd', Date());
+        var appointments = smart.patient.request("Appointment?date=ge" + todaysDate);
 
         $.when(pt, obv, appointments).fail(onError);
 
